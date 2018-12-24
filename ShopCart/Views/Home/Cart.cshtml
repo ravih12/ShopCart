@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ShopCart.Models.CartDetailsViewModel>
+@{
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+
+<style>
+
+</style>
+
+
+<section class="content">
+    @if (Model.Count() == 0)
+    {
+        <h3>Your Cart is Empty</h3>
+    }
+    @foreach (var item in Model)
+    {
+    <div class="row">
+        <div class="container">
+            <div class="col m2 ">
+
+                <div class="">
+                    <img src="@item.ImagePath" width="50" height="90">
+
+                </div>
+            </div>
+            <div class="col m6">
+                <h6>@item.ProductName</h6>
+                <span>Price:₹@item.Price</span><br />
+                <span>Quantity:@item.Quantity</span><br />
+                <span>Total Price(@item.Price X @item.Quantity):₹@item.TotalPrice  </span>
+            </div>
+                   
+                <div class="col m4 ">
+                    <div class="">
+                        
+                    </div>
+
+                </div>
+            
+        </div>
+        </div>
+
+                    
+    }
+</section>
+
+<div class="row">
+    <div class=" col m4"></div>
+    <div class=" col m4"></div>
+    <div class=" col m2">
+        <a href="/Home/Shipping" class="waves-effect waves-light btn ">Place Order </a>
+
+    </div>
+</div>
+<script>
+    function SetTotalPrice(count) {
+        console.log("SetCartItemCount count =", count);
+        $("#cartItemCount").html('');
+        $("#cartItemCount").append(count);
+    }
+
+</script>

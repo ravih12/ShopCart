@@ -1,0 +1,122 @@
+﻿<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ravi</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Compiled and minified JavaScript -->
+    
+    <style>
+        .notification-badge {
+            position: relative;
+            padding: 5px 9px;
+            background-color: #fff;
+            color: #941e1e;
+            bottom: 15px;
+            left: 15px;
+            border-radius: 50%;
+        }
+
+        .notif {
+            position: absolute;
+        }
+    </style>
+
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="/Home/HomePage" class="brand-logo"><i class="material-icons">cloud</i>e-BaZaaR</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="sass.html"><i class="material-icons">search</i></a></li>
+                <li><a href="badges.html"><i class="material-icons">view_module</i></a></li>
+                <li><a href="collapsible.html"><i class="material-icons">refresh</i></a></li>
+                <li><a href="/Home/Cart" class="wra"><i class="material-icons notif">shopping_cart</i>
+                <small class ="notification-badge" id="cartItemCount"></small></a></li>
+                
+               
+
+                <li><a href="mobile.html"><i class="material-icons">more_vert</i></a></li>
+            </ul>
+            @*<div class="nav-content">
+
+                <a class="btn-floating btn-small halfway-fab waves-effect waves-light teal">
+                    <i class="material-icons">add</i>
+                </a>
+            </div>*@
+        </div>
+    </nav>
+
+    <ul id="slide-out" class="sidenav">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                    <img src="~/img/bg3.jpg">
+                </div>
+                <a href="#user"><img class="circle" src="~/img/1.jpg"></a>
+                <a href="#name"><span class="white-text name">Ravi Chauhan</span></a>
+                <a href="#email"><span class="white-text email">ravichauhan1729@gmail.com</span></a>
+            </div>
+        </li>
+        <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+        <li><a href="#!">Second Link</a></li>
+        <li><div class="divider"></div></li>
+        <li><a class="subheader">Subheader</a></li>
+        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+    </ul>
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    @* End of nav Part *@
+
+    <div class="content-wrapper">
+        <div class="container">
+            <!-- Content Header (Page header) -->
+            <section class="content">
+                @RenderBody()
+            </section>
+        </div>
+    </div>
+
+    @* This the footer part *@
+    <div>
+        <footer class="page-footer">
+            <div class="container">
+                <div class="row">
+                    @*<div class="col l6 s12">
+                        <h5 class="white-text">Footer Content</h5>
+                        <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                    </div>*@
+                    <div class="col l4 offset-l2 s12">
+                        <h5 class="white-text">Navigate</h5>
+                        <ul>
+                            <li><a class="grey-text text-lighten-3" href="/Home/HomePage">Home</a></li>
+                            <li><a class="grey-text text-lighten-3" href="#!">Contact</a></li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <div class="container">
+                    © 2018 Copyright Text
+                    <a class="grey-text text-lighten-4 right" href="#!">P & P Ltd. </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="~/Scripts/ShopCart.js"></script>
+    <script>
+        var data;
+        $(document).ready(function () {
+            $('.sidenav').sidenav();
+        });
+       
+    </script>
+</body>
+</html>
