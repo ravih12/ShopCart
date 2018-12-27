@@ -16,7 +16,8 @@ namespace ShopCart.Models
             public int Price { get; set; }
             public int Quantity { get; set; }
             public int TotalPrice { get; set; }
-        
+           
+
 
     }
 }

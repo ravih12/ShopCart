@@ -6,7 +6,19 @@
 
 
 <style>
+    .btn-floating.btn-small {
+        width: 20.4px;
+        height: 20.4px;
+       
+    }
+        .btn-floating.btn-small i {
+            line-height: 22.4px;
+        }
 
+    .inputqty {
+        height: 1.1rem;
+        width: 5%;
+    }
 </style>
 
 
@@ -15,51 +27,98 @@
     {
         <h3>Your Cart is Empty</h3>
     }
-    @foreach (var item in Model)
-    {
-    <div class="row">
-        <div class="container">
-            <div class="col m2 ">
 
-                <div class="">
-                    <img src="@item.ImagePath" width="50" height="90">
+        <div class="row">
+            <div class="col m8">
+                <h3 id="idcartempty" style="display: none;"><span> Your Cart is Empty</span></h3>
+                @foreach (var item in Model)
+                {
+                    <div id="cartitembox_@item.ProductId">
 
-                </div>
-            </div>
-            <div class="col m6">
-                <h6>@item.ProductName</h6>
-                <span>Price:₹@item.Price</span><br />
-                <span>Quantity:@item.Quantity</span><br />
-                <span>Total Price(@item.Price X @item.Quantity):₹@item.TotalPrice  </span>
-            </div>
-                   
-                <div class="col m4 ">
-                    <div class="">
-                        
+                        <div class="row">
+                            <div class="container">
+                                <div class="col m2 ">
+
+                                    <div class="">
+                                        <img src="@item.ImagePath" width="50" height="90">
+
+                                    </div>
+                                </div>
+                                <div class="col m10">
+                                    <a onclick="RemoveFromCart(@item.ProductId, @item.Price)"><i class="material-icons right">close</i></a>
+                                    <h6>@item.ProductName</h6>
+                                    <span>Price:₹@item.Price</span><br />
+                                    <span>Quantity:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span><a class="btn-floating btn-small waves-effect waves-light red" id="minbtn_@item.ProductId" onclick="decreaseQtyCount(@item.Quantity,@item.Price,@item.ProductId)"><i class="material-icons">remove</i></a></span>
+                                    <span><input class="inputqty" id="qtyid_@item.ProductId" type="text" value=@item.Quantity></span>
+                                    <span><a class="btn-floating btn-small waves-effect waves-light red" id="maxbtn_@item.ProductId" onclick="increaseQtyCount(@item.Quantity,@item.Price,@item.ProductId)"><i class="material-icons">add</i></a></span>
+
+                                    <br />
+                                    <span id="idtotalprice_@item.ProductId">Total Price(@item.Price X @item.Quantity):₹@item.TotalPrice  </span>
+
+
+                                </div>
+                           </div>
+
+
+
+                        </div>
                     </div>
 
-                </div>
-            
-        </div>
-        </div>
 
+                }
+            </div>
+
+            <div class="col m4 ">
+                <div class="">
+
+                    @{ var total = 0;
+                        foreach (var item in Model)
+                        {
+
+                            total += item.TotalPrice;
+                        }
+
+                    }
                     
-    }
+                </div>
+                <h4 id="idtotalamount">Total Amount=<span id="sptotal">@total</span></h4>
+            </div>
+            </div>
 </section>
 
 <div class="row">
     <div class=" col m4"></div>
     <div class=" col m4"></div>
     <div class=" col m2">
-        <a href="/Home/Shipping" class="waves-effect waves-light btn ">Place Order </a>
-
+        <span><a href="/Home/Shipping" class="waves-effect waves-light btn " id="btnplaceorder">Place Order </a></span>
+        <span><a href="/Home/HomePage" class="waves-effect waves-light btn " id="btnaddtocart" style="display: none;">Add To Cart </a></span>
     </div>
 </div>
 <script>
+
+    //this is for resizing the input div of counter button value becasue materlize css load after the customize css class and it override.
+    styledic();
+    function styledic() {
+        console.log("hell1o");
+        $(".inputqty").css({
+            "height": "1.1rem",
+            "width": "5%"
+        });
+    }
     function SetTotalPrice(count) {
         console.log("SetCartItemCount count =", count);
         $("#cartItemCount").html('');
         $("#cartItemCount").append(count);
     }
+    //function decreaseQtyCount(qty, price, id) {
+    //    var Qty = qty - 1;
+    //    console.log("qty", Qty);
+    //    var string = "#qtyid_" + id;
+    //    $(string).html("Qty");
+    //    var total = Qty * price;
+    //    $("#idtotalprice").html('Total Price('+ price+ 'X' + Qty + '):'+  total);
+
+    //}
 
 </script>

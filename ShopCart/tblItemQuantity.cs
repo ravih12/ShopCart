@@ -17,5 +17,6 @@ namespace ShopCart
         public int shoppingCartId { get; set; }
         public Nullable<int> itemId { get; set; }
         public Nullable<int> Quantity { get; set; }
+        public Nullable<int> customerId { get; set; }
     }
 }

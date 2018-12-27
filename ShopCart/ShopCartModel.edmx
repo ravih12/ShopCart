@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ShoppingCartModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ShoppingCartModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tblCategory">
           <Key>
             <PropertyRef Name="id" />
@@ -22,7 +22,6 @@
           <Property Name="customerAddress" Type="nvarchar" MaxLength="50" />
           <Property Name="mobile" Type="nvarchar" MaxLength="50" />
           <Property Name="totalAmount" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="shoppingCartId" Type="int" />
         </EntityType>
         <EntityType Name="tblItemQuantity">
           <Key>
@@ -31,6 +30,7 @@
           <Property Name="shoppingCartId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="itemId" Type="int" />
           <Property Name="Quantity" Type="int" />
+          <Property Name="customerId" Type="int" />
         </EntityType>
         <EntityType Name="tblOrder">
           <Key>
@@ -77,8 +77,7 @@
           <EntitySet Name="tblProduct" EntityType="Self.tblProduct" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductDetails" EntityType="Self.tblProductDetails" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ShoppingCartModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -99,7 +98,6 @@
           <Property Name="customerAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="totalAmount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="shoppingCartId" Type="Int32" />
         </EntityType>
         <EntityType Name="tblItemQuantity">
           <Key>
@@ -108,6 +106,7 @@
           <Property Name="shoppingCartId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="itemId" Type="Int32" />
           <Property Name="Quantity" Type="Int32" />
+          <Property Name="customerId" Type="Int32" />
         </EntityType>
         <EntityType Name="tblOrder">
           <Key>
@@ -177,13 +176,13 @@
                 <ScalarProperty Name="customerAddress" ColumnName="customerAddress" />
                 <ScalarProperty Name="mobile" ColumnName="mobile" />
                 <ScalarProperty Name="totalAmount" ColumnName="totalAmount" />
-                <ScalarProperty Name="shoppingCartId" ColumnName="shoppingCartId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tblItemQuantities">
             <EntityTypeMapping TypeName="ShoppingCartModel.tblItemQuantity">
               <MappingFragment StoreEntitySet="tblItemQuantity">
+                <ScalarProperty Name="customerId" ColumnName="customerId" />
                 <ScalarProperty Name="shoppingCartId" ColumnName="shoppingCartId" />
                 <ScalarProperty Name="itemId" ColumnName="itemId" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />

@@ -9,6 +9,7 @@ namespace ShopCart.Controllers
 {
     public class HomeController : Controller
     {
+        
         public ActionResult HomePage()
         {
            using (ShoppingCartEntities db = new ShoppingCartEntities())
@@ -55,6 +56,8 @@ namespace ShopCart.Controllers
         [HttpPost]
         public ActionResult Addtocart(int id)
         {
+            ShoppingCartEntities objdb = new ShoppingCartEntities();
+            var price = objdb.tblProductDetails.Where(c => c.productId == id).FirstOrDefault().price;
             DisplayOrderDetailsVM cartIds = new DisplayOrderDetailsVM();
             cartIds.CDVM = new List<CartDetailsViewModel>();
             if (Session["cart"] == null)
@@ -62,7 +65,8 @@ namespace ShopCart.Controllers
                 CartDetailsViewModel cv = new CartDetailsViewModel()
                 {
                     ProductId = id,
-                    Quantity = 1
+                    Quantity = 1,
+                    Price = price
                 };
                 cartIds.CDVM.Add(cv);
                 Session["cart"] = cartIds;
@@ -80,7 +84,8 @@ namespace ShopCart.Controllers
                     CartDetailsViewModel cv = new CartDetailsViewModel()
                     {
                         ProductId = id,
-                        Quantity = 1
+                        Quantity = 1,
+                        Price = price
                     };
                     cartIds.CDVM.Add(cv);
                 }
@@ -89,21 +94,29 @@ namespace ShopCart.Controllers
             }
             return Json(new { totalCount = cartIds.CDVM.Count }, JsonRequestBehavior.AllowGet);
         }
+       
         [HttpPost]
         public JsonResult GetCartItems()
         {
+            
             DisplayOrderDetailsVM ids = new DisplayOrderDetailsVM();
+            CartDetailsViewModel objcdvm = new CartDetailsViewModel();
+           
             if (Session["Cart"] != null)
             {
+                
                 ids = (DisplayOrderDetailsVM)Session["Cart"];
-                return Json(new { cartItemsCount = ids.CDVM.Count, cartItems = ids });
+                            
+            
+                return Json(new { cartItemsCount = ids.CDVM.Count, cartItems = ids});
+
             }
             else
             {
                 return Json(new { cartItemsCount = 0, cartItems = ids }, JsonRequestBehavior.AllowGet);
             }
         }
-
+        
         [HttpGet]
         public ActionResult Shipping()
         {
@@ -114,7 +127,7 @@ namespace ShopCart.Controllers
         [HttpPost]
         public ActionResult Shipping(ShippingViewModel objship)
         {
-
+            
             DisplayOrderDetailsVM ids = new DisplayOrderDetailsVM();
             if (Session["Cart"] != null)
             {
@@ -126,21 +139,26 @@ namespace ShopCart.Controllers
             {
                 tblCustomerDetail objtblcd = new tblCustomerDetail();
                 tblItemQuantity objtbliq = new tblItemQuantity();
-                foreach (var i in ids.CDVM)
-                {
-                    objtbliq.shoppingCartId = objtblcd.shoppingCartId;
-                    objtbliq.itemId = i.ProductId;
-                    objtbliq.Quantity = i.Quantity;
-                }
-                objdb.tblItemQuantities.Add(objtbliq);
-                objdb.SaveChanges();
-
-                
                 objtblcd.customerName = ids.SVM.CustomerName;
                 objtblcd.customerAddress = ids.SVM.Address;
                 objtblcd.mobile = ids.SVM.Mobile;
                 objdb.tblCustomerDetails.Add(objtblcd);
                 objdb.SaveChanges();
+
+                foreach (var i in ids.CDVM)
+                {
+                    
+                    objtbliq.itemId = i.ProductId;
+                    objtbliq.Quantity = i.Quantity;
+                    objtbliq.customerId = objtblcd.customerId;
+                    objdb.tblItemQuantities.Add(objtbliq);
+                    objdb.SaveChanges();
+                }
+                
+               
+
+                
+               
 
                 
                 return Json(new { msg="Order Placed", Url = "/Home/HomePage" }, JsonRequestBehavior.AllowGet);
@@ -148,12 +166,63 @@ namespace ShopCart.Controllers
             }
         }
 
-        
-      public ActionResult ConfirmationPage()
+
+        public ActionResult RemoveFromCart(int id)
         {
-            DisplayOrderDetailsVM ids = (DisplayOrderDetailsVM)Session["Cart"];
-            
-            return View(ids);
+            //DisplayOrderDetailsVM ids = new DisplayOrderDetailsVM();
+            DisplayOrderDetailsVM cartIds = (DisplayOrderDetailsVM)Session["cart"];
+            var prod = cartIds.CDVM.Where(c => c.ProductId == id).FirstOrDefault();
+            if (prod != null)
+            {
+                cartIds.CDVM.Remove(prod);
+            }
+
+            Session["cart"] = cartIds;
+            return Json(new {msg="success", cartItemsCount = cartIds.CDVM.Count });
+        }
+
+        public ActionResult DecreaseQty(int id)
+
+        {
+            int grandAmount = 0;
+            DisplayOrderDetailsVM cartIds = (DisplayOrderDetailsVM)Session["cart"];
+            var qty = cartIds.CDVM.Where(c => c.ProductId == id).FirstOrDefault();
+            Session["cart"] = null;
+            if (qty != null)
+            {
+                qty.Quantity = qty.Quantity - 1;
+                
+
+            }
+            Session["cart"] = cartIds;
+            foreach (var i in cartIds.CDVM)
+            {
+                grandAmount = grandAmount + (i.Price * i.Quantity);
+             
+            }
+            return Json(new { msg = "DecreaseQty_Success", updateQty=qty.Quantity, grandAmount });
+        }
+        public ActionResult IncreaseQty(int id)
+
+        {
+            int grandAmount = 0;
+            DisplayOrderDetailsVM cartIds = (DisplayOrderDetailsVM)Session["cart"];
+            var qty = cartIds.CDVM.Where(c => c.ProductId == id).FirstOrDefault();
+            Session["cart"] = null;
+            if (qty != null)
+            {
+                
+                qty.Quantity = qty.Quantity + 1;
+
+
+            }
+            Session["cart"] = cartIds;
+            foreach (var i in cartIds.CDVM)
+            {
+                grandAmount = grandAmount + (i.Price * i.Quantity);
+
+            }
+            return Json(new { msg = "DecreaseQty_Success", updateQty = qty.Quantity, grandAmount });
         }
 
 

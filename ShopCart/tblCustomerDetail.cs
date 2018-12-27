@@ -19,6 +19,5 @@ namespace ShopCart
         public string customerAddress { get; set; }
         public string mobile { get; set; }
         public Nullable<decimal> totalAmount { get; set; }
-        public int shoppingCartId { get; set; }
     }
 }
